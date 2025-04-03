@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.api.short_urls import router
+from src.routers.routers import router
 
 main_router = APIRouter()
 
