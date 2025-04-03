@@ -1,7 +1,8 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import APIRouter
+from fastapi.responses import RedirectResponse
 
 from src.schemas.schema import SchemUrls
-from src.services.service import shorten_url
+from src.services.service import UrlService
 
 router = APIRouter(
     prefix="/",
@@ -9,12 +10,11 @@ router = APIRouter(
 )
 
 
-@router.post('')
-async def download_url(url: SchemUrls, base_url):
-    short_url = shorten_url(base_url)
-    return short_url
+@router.post('', status_code=201)
+async def post_url(base_url: SchemUrls):
+    return await UrlService.download_in_base(str(base_url.url))
 
 
-@router.get('/{shorten_url_id}')
-async def get_short_url_router(shorten_url_id: str) -> SchemUrls:
-    pass
+@router.get('', status_code=307)
+async def get_short_url(short_url):
+    return RedirectResponse(await UrlService.find_url(short_url))
