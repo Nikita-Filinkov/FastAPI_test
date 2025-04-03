@@ -13,8 +13,7 @@ def shorten_url(base_url):
 class UrlService:
 
     @classmethod
-    async def download_in_base(cls, base_url):
-        short_url = shorten_url(base_url)
+    async def download_in_base(cls, base_url, short_url):
         async with async_session_maker() as session:
             try:
                 query = insert(Urls).values(urls=base_url, short_urls=short_url)
